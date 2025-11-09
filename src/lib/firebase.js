@@ -1,6 +1,19 @@
+// firebase.js
 import { initializeApp } from 'firebase/app'
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { 
+  getAuth, 
+  onAuthStateChanged, 
+  signInWithEmailAndPassword, 
+  signOut,
+  // Tambahan untuk Google Sign-In
+  GoogleAuthProvider, 
+  signInWithPopup,
+  // Tambahan untuk Register
+  createUserWithEmailAndPassword,
+  updateProfile, 
+} from 'firebase/auth'
 
+// Pastikan variabel lingkungan (VITE_FIREBASE_...) sudah diatur
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -10,6 +23,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app)
+
+// --- FUNGSI UTAMA UNTUK API ---
 
 export function waitForCurrentUser() {
   return new Promise((resolve) => {
@@ -26,6 +41,18 @@ export async function getIdToken(forceRefresh = false) {
   return user.getIdToken(forceRefresh)
 }
 
-export { signInWithEmailAndPassword, signOut }
+// --- EKSPOR FUNGSI AUTH LAINNYA ---
 
+export const googleProvider = new GoogleAuthProvider()
 
+export async function signInWithGoogle() {
+  // Menggunakan signInWithPopup untuk pop-up Google Sign-In
+  await signInWithPopup(auth, googleProvider)
+}
+
+export { 
+  signInWithEmailAndPassword, 
+  signOut,
+  createUserWithEmailAndPassword, 
+  updateProfile
+}
