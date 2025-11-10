@@ -2,6 +2,9 @@ import { getIdToken } from './firebase'
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || `https://huffadz.portalsi.com/api/v1/`
 
+
+// const API_BASE = import.meta.env.VITE_API_BASE_URL || `http://${location.hostname}:8000/api/v1/`
+
 async function authFetch(path, options = {}) {
   const token = await getIdToken()
   

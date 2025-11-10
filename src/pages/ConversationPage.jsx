@@ -216,16 +216,21 @@ function ConversationPage() {
       }
       
       // Data Answer (Bot)
-      // h.content berisi seluruh objek SmartAnswer yang tersimpan
-      const answerContent = h.content; 
-      
-      // Hapus ID unik answer dari konten untuk menghindari kebingungan dengan ID lainnya
-      delete answerContent.answer_id;
+      const answerContent = h.content; // Objek SmartAnswer lengkap
+
+      // Tambahkan safety check untuk menghindari TypeError
+      if (answerContent && typeof answerContent === 'object') {
+          // Menghapus metadata relasi sebelum dikirim ke komponen UI
+          // Jika answerContent null/undefined, delete akan gagal dan menyebabkan error Anda.
+          delete answerContent.conversation_id; 
+          delete answerContent.prompt_id;
+      }
 
       return {
         id: h.id,
         role: 'bot',
-        content: answerContent?.summary_text || h.text, // Teks utama/ringkasan
+        // Ambil summary_text dari objek konten, atau gunakan h.text sebagai fallback
+        content: answerContent?.summary_text || h.text || 'Jawaban tidak ditemukan.', 
         answerContent: answerContent, // SIMPAN OBJEK SMART ANSWER LENGKAP
         time: h.timestamp ? new Date(h.timestamp._seconds * 1000) : new Date(), 
       }

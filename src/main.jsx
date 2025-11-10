@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import App from './App.jsx'
-import ConversationPage from './pages/ConversationPage.jsx'
+import ConversationPage from './pages/ConversationPage'
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 
