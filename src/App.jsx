@@ -1,8 +1,25 @@
-// App.jsx
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { auth, waitForCurrentUser, signOut } from "./lib/firebase";
+import { Book, Brain, MessageCircle } from "lucide-react";
 
+// ==============================
+// ANIMASI VARIANTS
+// ==============================
+const fadeUp = {
+  hidden: { opacity: 0, y: 50 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+};
+
+const fadeIn = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { duration: 1.2, ease: "easeOut" } },
+};
+
+// ==============================
+// KOMPONEN UTAMA
+// ==============================
 function App() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -21,24 +38,24 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#1A2327] via-[#2B3B36] to-[#1A2327] text-[#E0E0D6]">
-      {/* ===== Hero Section ===== */}
-      <header className="h-16 flex items-center justify-between px-6 backdrop-blur-md bg-[#1A2327]/40 border-b border-[#B8860B]/20 shadow-lg sticky top-0 z-40">
-        <div className="font-semibold tracking-wide text-[#B8860B] text-lg">
-          Huffadz<span className="text-[#E0E0D6]">AI</span>
+    <div className="min-h-screen w-full bg-[#1A2327] text-[#E0E0D6] overflow-x-hidden scroll-smooth">
+      {/* ==================== HEADER ==================== */}
+      <header className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 md:px-16 py-4 bg-[#1A2327]/70 backdrop-blur border-b border-[#B8860B]/20">
+        <div className="text-2xl font-bold text-[#B8860B] tracking-tight">
+          HuffadzAI
         </div>
         <div className="flex items-center gap-2">
           {user ? (
             <>
               <Link
                 to="/chat"
-                className="rounded-full px-4 py-2 text-sm bg-[#B8860B] text-[#1A2327] hover:bg-[#d4a017] font-medium transition"
+                className="px-4 py-2 rounded-full text-sm bg-[#B8860B] text-[#1A2327] font-medium hover:bg-[#d6a72d] transition"
               >
                 Chat
               </Link>
               <button
                 onClick={handleLogout}
-                className="rounded-full px-4 py-2 text-sm border border-[#B8860B]/50 hover:bg-[#B8860B]/10 transition"
+                className="px-4 py-2 rounded-full text-sm border border-[#E0E0D6]/40 hover:bg-[#2B3B36] transition"
               >
                 Logout
               </button>
@@ -46,7 +63,7 @@ function App() {
           ) : (
             <Link
               to="/login"
-              className="rounded-full px-4 py-2 text-sm bg-[#B8860B] text-[#1A2327] hover:bg-[#d4a017] font-medium transition"
+              className="px-4 py-2 rounded-full text-sm bg-[#B8860B] text-[#1A2327] font-medium hover:bg-[#d6a72d] transition"
             >
               Login
             </Link>
@@ -54,94 +71,279 @@ function App() {
         </div>
       </header>
 
-      {/* ===== Hero Section ===== */}
-      <section className="relative flex flex-col items-center justify-center text-center py-24 px-6 overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60rem] h-[60rem] bg-[#B8860B]/10 rounded-full blur-3xl opacity-40" />
-          <div className="absolute bottom-0 right-0 w-[40rem] h-[40rem] bg-[#2B3B36]/80 rounded-full blur-3xl opacity-30" />
-        </div>
+      {/* ==================== HERO SECTION ==================== */}
+      <motion.section
+        initial="hidden"
+        animate="show"
+        variants={fadeIn}
+        className="min-h-screen flex flex-col justify-center items-center text-center px-6 md:px-16 bg-gradient-to-br from-[#1A2327] via-[#2B3B36] to-[#1A2327] pt-24 relative overflow-hidden"
+      >
+        {/* PARALLAX LIGHT EFFECT */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,#B8860B22_0%,transparent_70%)] animate-pulse-slow"></div>
 
-        <h1 className="text-4xl sm:text-6xl font-bold leading-tight">
-          Belajar, Hafalan, dan <span className="text-[#B8860B]">Tanya Jawab Islami</span>  
-          <br /> dengan Sentuhan AI Modern
-        </h1>
-        <p className="mt-6 max-w-2xl text-[#E0E0D6]/80">
-          HuffadzAI membantu Anda memahami dan menghafal Al-Qur'an dengan cara yang tenang, cepat, dan interaktif.
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-4">
+        <motion.h1
+          variants={fadeUp}
+          className="text-4xl md:text-6xl font-bold text-[#E0E0D6] leading-tight z-10"
+        >
+          Belajar Al-Quran & Hadis jadi lebih mudah bersama{" "}
+          <span className="text-[#B8860B]">HuffadzAI</span>
+        </motion.h1>
+
+        <motion.p
+          variants={fadeUp}
+          className="mt-6 text-[#E0E0D6]/80 max-w-2xl text-lg z-10"
+        >
+          Asisten Islami berbasis kecerdasan buatan yang membantu
+          memahami makna Al-Quran dan mendukung pembelajaran agama dengan
+          cara yang modern.
+        </motion.p>
+
+        <motion.div
+          variants={fadeUp}
+          className="mt-8 flex flex-wrap justify-center gap-3 z-10"
+        >
           <Link
             to="/chat"
-            className="rounded-full px-6 py-3 bg-[#B8860B] text-[#1A2327] font-semibold hover:bg-[#d4a017] transition"
+            className="px-6 py-3 rounded-full bg-[#B8860B] text-[#1A2327] font-semibold hover:bg-[#d6a72d] transition"
           >
             Mulai Chat
           </Link>
           <Link
             to="/register"
-            className="rounded-full px-6 py-3 border border-[#B8860B]/60 hover:bg-[#B8860B]/10 transition"
+            className="px-6 py-3 rounded-full border border-[#E0E0D6]/40 hover:bg-[#2B3B36] transition"
           >
-            Daftar Sekarang
+            Daftar
           </Link>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
-      {/* ===== Tentang HuffadzAI ===== */}
-      <section className="py-20 px-6 bg-gradient-to-b from-[#1A2327] via-[#24302C] to-[#1A2327]">
-        <div className="max-w-5xl mx-auto text-center space-y-6">
-          <h2 className="text-3xl font-bold text-[#B8860B]">Tentang HuffadzAI</h2>
-          <p className="text-[#E0E0D6]/80 leading-relaxed max-w-3xl mx-auto">
-            HuffadzAI adalah asisten Islami berbasis kecerdasan buatan yang dirancang untuk membantu umat dalam hafalan Al-Qur'an, memahami tafsir, dan memperdalam ilmu agama dengan teknologi terkini.  
-            <br />Tenang, sederhana, dan bermanfaat.
-          </p>
-          <img
-            src="https://images.unsplash.com/photo-1612178993483-b2e4b5e8f8e1?auto=format&fit=crop&w=1000&q=80"
-            alt="HuffadzAI illustration"
-            className="mx-auto rounded-3xl shadow-2xl border border-[#B8860B]/30 w-full max-w-3xl object-cover"
+      {/* ==================== ABOUT SECTION ==================== */}
+      <motion.section
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={fadeUp}
+        className="min-h-screen flex flex-col md:flex-row items-center justify-center gap-10 px-6 md:px-20 py-20 bg-gradient-to-br from-[#2B3B36] via-[#1A2327] to-[#2B3B36] relative overflow-hidden"
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,#B8860B22_0%,transparent_70%)]"></div>
+
+        {/* VIDEO */}
+        <motion.div
+          variants={fadeIn}
+          className="w-full md:w-2/3 flex justify-center z-10"
+        >
+          <video
+            src="/videos/huffadzAI.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="rounded-2xl shadow-2xl w-[90%] md:w-[80%] border border-[#B8860B]/30"
           />
-        </div>
-      </section>
+        </motion.div>
 
-      {/* ===== Fitur Utama ===== */}
-      <section className="py-20 px-6 bg-[#1A2327]">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-[#B8860B] mb-12">Fitur Unggulan</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { title: "Tanya Jawab Islami", desc: "Jawaban cepat dan akurat seputar Al-Qur'an & Hadits." },
-              { title: "Bantu Hafalan", desc: "Fitur murajaah cerdas untuk membantu hafalan ayat." },
-              { title: "Tafsir & Referensi", desc: "Sumber rujukan Islami terpercaya dan terverifikasi." },
-              { title: "Desain Spiritual", desc: "Warna lembut, nuansa tenang, dan mudah dibaca." },
-            ].map((f, i) => (
-              <div
-                key={i}
-                className="p-6 rounded-2xl bg-[#2B3B36]/70 backdrop-blur-md border border-[#B8860B]/20 hover:border-[#B8860B]/40 hover:scale-[1.03] transition-all shadow-lg"
-              >
-                <h3 className="font-semibold text-lg text-[#B8860B] mb-2">{f.title}</h3>
-                <p className="text-[#E0E0D6]/80 text-sm">{f.desc}</p>
-              </div>
-            ))}
+        {/* TEXT */}
+        <div className="w-full md:w-1/2 space-y-6 text-center md:text-left z-10">
+          <h2 className="text-3xl md:text-5xl font-bold text-[#B8860B]">
+            Tentang HuffadzAI
+          </h2>
+          <p className="text-lg text-[#E0E0D6]/90 leading-relaxed">
+          Tujuan utama HuffadzAI adalah untuk menyediakan akses cepat, mudah, dan terverifikasi
+          terhadap pengetahuan Islam dengan merujuk langsung pada kitab suci Al-Qur'an dan kumpulan
+          Hadis (seperti Sahih al-Bukhari, Sahih Muslim, dll.).
+          </p>
+          <p className="text-sm text-[#E0E0D6]/70">
+            Didesain dengan ketenangan dan kemudahan dalam setiap interaksi,
+            HuffadzAI menjadi teman belajar yang memahami nilai-nilai keislaman
+            di era digital.
+          </p>
+        </div>
+      </motion.section>
+
+      {/* ==================== FITUR UNGGULAN ==================== */}
+<motion.section
+  initial="hidden"
+  whileInView="show"
+  viewport={{ once: true, amount: 0.3 }}
+  variants={fadeUp}
+  className="relative bg-gradient-to-br from-[#1A2327] via-[#2B3B36] to-[#1A2327] text-[#E0E0D6] py-24 px-6 md:px-20 overflow-hidden"
+>
+  {/* Ornamen cahaya dan pola */}
+  <div className="absolute top-0 right-0 w-72 h-72 bg-[#B8860B]/20 blur-3xl rounded-full"></div>
+  <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#B8860B]/10 blur-3xl rounded-full"></div>
+  <div className="absolute inset-0 bg-[url('/patterns/islamic-pattern.svg')] opacity-5"></div>
+
+  <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-16 relative z-10">
+    {/* TEKS */}
+    <motion.div
+      initial={{ opacity: 0, x: -60 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="md:w-1/2 space-y-6"
+    >
+      <h2 className="text-3xl md:text-5xl font-bold text-[#B8860B] leading-tight">
+        Fitur Unggulan HuffadzAI
+      </h2>
+      <p className="text-[#E0E0D6]/80 text-lg leading-relaxed">
+        HuffadzAI tidak hanya membantu hafalan, tetapi juga mendampingi
+        perjalanan spiritualmu melalui berbagai fitur canggih dan bermanfaat.
+      </p>
+
+      <ul className="space-y-4 text-left">
+        <li className="flex items-start gap-3">
+          <div className="mt-1 w-3 h-3 bg-[#B8860B] rounded-full"></div>
+          <p>
+            <span className="text-[#B8860B] font-semibold">
+            Teks Lengkap Al-Qur'an
+            </span>{" "}
+            – Termasuk ayat-ayat dan terjemahannya
+          </p>
+        </li>
+        <li className="flex items-start gap-3">
+          <div className="mt-1 w-3 h-3 bg-[#B8860B] rounded-full"></div>
+          <p>
+            <span className="text-[#B8860B] font-semibold">
+              Asisten Islami Pintar
+            </span>{" "}
+            – Mampu menjawab pertanyaan seputar akidah, ibadah, muamalah, sejarah islam, dan etika
+          </p>
+        </li>
+        <li className="flex items-start gap-3">
+          <div className="mt-1 w-3 h-3 bg-[#B8860B] rounded-full"></div>
+          <p>
+            <span className="text-[#B8860B] font-semibold">
+            Memperluas Pertanyaan 
+            </span>{" "}
+            – Menggunakan AI untuk mengembangkan pertanyaan pengguna agar pencarian di basis data menjadi lebih komprehensif dan akurat.
+          </p>
+        </li>
+      </ul>
+
+      <p className="mt-6 text-[#E0E0D6]/70 italic">
+        “Sesungguhnya orang yang paling mulia di antara kamu di sisi Allah
+        ialah orang yang paling bertakwa.” <br />
+        <span className="text-[#B8860B]">(QS. Al-Hujurat: 13)</span>
+      </p>
+
+      <div className="mt-8">
+        <button className="px-8 py-3 bg-[#B8860B] text-[#1A2327] font-semibold rounded-full hover:bg-[#d6a72d] transition shadow-lg">
+          Coba Sekarang
+        </button>
+      </div>
+    </motion.div>
+
+    {/* GAMBAR ILUSTRASI */}
+    <motion.div
+      initial={{ opacity: 0, x: 60 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="md:w-1/2 flex justify-center relative"
+    >
+      <div className="absolute -top-10 -left-10 w-72 h-72 bg-[#B8860B]/10 blur-2xl rounded-full"></div>
+      <img
+        src="https://image.lexica.art/full_webp/75095b98-fe40-49e6-9d94-0590f4c412b8"
+        alt="Fitur HuffadzAI"
+        className="rounded-2xl shadow-2xl border border-[#B8860B]/20 w-full max-w-md z-10"
+      />
+    </motion.div>
+  </div>
+</motion.section>
+
+      {/* ==================== KEUTAMAAN MENGHAFAL ==================== */}
+<motion.section
+  initial="hidden"
+  whileInView="show"
+  viewport={{ once: true, amount: 0.3 }}
+  variants={fadeUp}
+  className="bg-gradient-to-br from-[#2B3B36] via-[#1A2327] to-[#2B3B36] text-[#E0E0D6] py-20 px-6 md:px-20 relative overflow-hidden"
+>
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,#B8860B22_0%,transparent_70%)]"></div>
+
+  <div className="relative z-10 text-center mb-16">
+    <div className="h-[2px] w-24 bg-[#B8860B] mx-auto mb-4"></div>
+    <h2 className="text-3xl md:text-5xl font-bold text-[#B8860B]">
+      Keutamaan Menghafal Al-Quran
+    </h2>
+  </div>
+
+  {/* Timeline Container */}
+  <div className="relative z-10 max-w-5xl mx-auto">
+    {/* Garis Tengah */}
+    <div className="absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 w-[2px] bg-[#B8860B]/40"></div>
+
+    {[
+      {
+        num: 1,
+        title: "Dinaikkan Derajatnya",
+        desc: "Rasulullah ﷺ bersabda: 'Sebaik-baik kalian adalah yang belajar Al-Quran dan mengajarkannya.' (HR. Bukhari)",
+        arab: "خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ",
+      },
+      {
+        num: 2,
+        title: "Dikumpulkan Bersama Malaikat",
+        desc: "Penghafal Al-Qur’an akan ditempatkan bersama para malaikat yang mulia dan taat. (HR. Bukhari & Muslim)",
+        arab: "الَّذِي يَقْرَأُ الْقُرْآنَ وَهُوَ مَاهِرٌ بِهِ مَعَ السَّفَرَةِ الْكِرَامِ الْبَرَرَةِ",
+      },
+      {
+        num: 3,
+        title: "Pemberi Syafaat",
+        desc: "Al-Qur’an akan datang memberi syafaat kepada penghafalnya pada hari kiamat. (HR. Muslim)",
+        arab: "اقْرَؤُوا الْقُرْآنَ، فَإِنَّهُ يَأْتِي يَوْمَ الْقِيَامَةِ شَفِيعًا لِأَصْحَابِهِ",
+      },
+      {
+        num: 4,
+        title: "Mahkota untuk Orang Tua",
+        desc: "Orang tua penghafal Al-Qur’an akan diberi mahkota cahaya di hari kiamat. (HR. Abu Dawud)",
+        arab: "يُكْسَى وَالِدَاهُ يَوْمَ الْقِيَامَةِ تَاجًا نُورُهُ أَضْوَأُ مِنَ الشَّمْسِ",
+      },
+      {
+        num: 5,
+        title: "Ketenangan Hati",
+        desc: "Menghafal dan membaca Al-Qur’an mendatangkan ketenangan dan ketenteraman jiwa. (QS. Ar-Ra’d: 28)",
+        arab: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ",
+      },
+    ].map((item, index) => (
+      <motion.div
+        key={index}
+        variants={fadeUp}
+        className={`relative flex flex-col md:flex-row items-center mb-20 ${
+          index % 2 === 0 ? "md:flex-row-reverse" : ""
+        }`}
+      >
+        {/* Teks */}
+        <div className="md:w-1/2 px-6 text-center md:text-left">
+          <h3 className="text-2xl font-semibold text-[#B8860B] mb-3">{item.title}</h3>
+          <p className="text-[#E0E0D6]/80 mb-3 leading-relaxed">{item.desc}</p>
+          <p className="text-2xl md:text-3xl font-arabic text-[#E0E0D6] leading-snug">{item.arab}</p>
+        </div>
+
+        {/* Nomor di Tengah */}
+        <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+          <div className="bg-[#B8860B] text-[#1A2327] w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-md">
+            {item.num}
           </div>
         </div>
-      </section>
+      </motion.div>
+    ))}
+  </div>
+</motion.section>
 
-      {/* ===== CTA Section ===== */}
-      <section className="py-20 text-center bg-gradient-to-r from-[#2B3B36] to-[#1A2327]">
-        <h2 className="text-3xl font-bold mb-6">Siap Memulai Perjalanan Anda?</h2>
-        <Link
-          to="/chat"
-          className="inline-block px-8 py-3 rounded-full bg-[#B8860B] text-[#1A2327] font-semibold hover:bg-[#d4a017] transition"
-        >
-          Mulai Sekarang
-        </Link>
-      </section>
 
-      {/* ===== Footer ===== */}
-      <footer className="py-6 text-center border-t border-[#B8860B]/20 text-sm text-[#E0E0D6]/70">
-        <div className="flex justify-center gap-4 mb-2">
-          <a href="#" className="hover:text-[#B8860B] transition">Instagram</a>
-          <a href="#" className="hover:text-[#B8860B] transition">YouTube</a>
-          <a href="#" className="hover:text-[#B8860B] transition">GitHub</a>
+      {/* ==================== FOOTER ==================== */}
+      <footer className="bg-[#1A2327] border-t border-[#B8860B]/20 text-center py-10 text-[#E0E0D6]/70">
+        <p className="mb-3">Ikuti kami di</p>
+        <div className="flex justify-center gap-6 mb-4">
+          <a href="#" className="hover:text-[#B8860B] transition">
+            Instagram
+          </a>
+          <a href="#" className="hover:text-[#B8860B] transition">
+            YouTube
+          </a>
+          <a href="#" className="hover:text-[#B8860B] transition">
+            GitHub
+          </a>
         </div>
-        © 2025 HuffadzAI. All rights reserved.
+        <p className="text-sm">© 2025 HuffadzAI. Semua Hak Dilindungi.</p>
       </footer>
     </div>
   );

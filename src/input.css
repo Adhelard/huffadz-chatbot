@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+@keyframes pulse-slow {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse-slow 6s ease-in-out infinite;
+  }
+  
+  @import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+
+.font-arabic {
+  font-family: 'Amiri', serif;
+  direction: rtl;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+
+.font-arabic {
+  font-family: 'Amiri', serif;
+  direction: rtl;
+}
+
