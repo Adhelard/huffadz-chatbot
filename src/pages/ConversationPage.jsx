@@ -3,6 +3,113 @@ import { useNavigate } from 'react-router-dom'
 import { auth, waitForCurrentUser, signOut } from '../lib/firebase'
 import { api } from '../lib/api'
 
+// --- 1. KOMPONEN RENDERER UNTUK AYAT AL-QUR'AN ---
+
+function QuranicContentRenderer({ data }) {
+    if (!data) return null;
+    return (
+        // Style untuk konten Qur'an
+        <div className="mt-3 p-4 rounded-xl border border-white/50 dark:border-slate-800/60 bg-white/30 dark:bg-slate-800/60 text-left">
+            <h4 className="font-semibold text-base mb-2 border-b border-black/10 dark:border-white/10 pb-1 text-emerald-600 dark:text-emerald-400">
+                {data.surah_name} ({data.surah_number}): {data.ayah_number}
+            </h4>
+            {data.arabic_text && (
+                // Tambahkan font yang mendukung Bahasa Arab (pastikan di-import di project Anda)
+                <p className="text-2xl my-3 font-serif text-right leading-relaxed">
+                    {data.arabic_text}
+                </p>
+            )}
+            <p className="text-sm italic my-2 border-t pt-2 border-black/10 dark:border-white/10">
+                **Terjemahan:** "{data.translation}"
+            </p>
+            {data.tafsir_summary && (
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                    **Tafsir Singkat:** {data.tafsir_summary}
+                </p>
+            )}
+        </div>
+    );
+}
+
+// --- 2. KOMPONEN RENDERER UNTUK HADITS ---
+
+function HadithContentRenderer({ data }) {
+    if (!data) return null;
+    
+    return (
+        <div className="mt-3 p-4 rounded-xl border border-white/50 dark:border-slate-800/60 bg-white/30 dark:bg-slate-800/60 text-left">
+            <h4 className="font-semibold text-base mb-2 border-b border-black/10 dark:border-white/10 pb-1">
+                Hadits dari {data.book} No. {data.number}
+            </h4>
+            {data.arabic_text && (
+                <p className="text-xl my-3 font-serif text-right">{data.arabic_text}</p>
+            )}
+            <p className="text-sm italic my-2">"{data.translation}"</p>
+            {data.narrator && <p className="text-xs text-slate-500 dark:text-slate-400">Diriwayatkan oleh: {data.narrator}</p>}
+            {data.details && <p className="text-xs mt-2 font-medium">Detail: {data.details}</p>}
+        </div>
+    );
+}
+
+// --- 3. KOMPONEN RENDERER UNTUK SURAT ---
+
+function LetterContentRenderer({ data }) {
+    if (!data) return null;
+
+    return (
+        <div className="mt-3 p-4 rounded-xl border border-white/50 dark:border-slate-800/60 bg-white/30 dark:bg-slate-800/60 text-left">
+            <h4 className="font-semibold text-base mb-2 border-b border-black/10 dark:border-white/10 pb-1 text-sky-600 dark:text-sky-400">{data.letter_type}</h4>
+            <p className="text-sm italic mb-3">{data.date}</p>
+            <p className="text-sm">Kepada Yth. {data.recipient}</p>
+            <p className="text-sm mb-4">Dari: {data.sender}</p>
+
+            <p className="text-sm font-medium">{data.salutation}</p>
+            {data.body_paragraphs.map((p, i) => (
+                <p key={i} className="text-sm mt-2 indent-8">{p}</p>
+            ))}
+            <p className="text-sm mt-4 font-medium">{data.closing}</p>
+        </div>
+    );
+}
+
+// --- 4. KOMPONEN UTAMA (DECIDER) UNTUK JAWABAN BOT ---
+
+function SmartAnswerRenderer({ message }) {
+    const contentText = message.content;
+    const answerContent = message.answerContent; // Objek SmartAnswer lengkap
+
+    if (!answerContent) return <div className="text-left">{contentText}</div>;
+
+    // Tentukan render yang sesuai berdasarkan properti yang ada
+    let structuredContent = null;
+    if (answerContent.quran_example) {
+        structuredContent = <QuranicContentRenderer data={answerContent.quran_example} />;
+    } else if (answerContent.hadith_example) {
+        structuredContent = <HadithContentRenderer data={answerContent.hadith_example} />;
+    } else if (answerContent.letter_example) {
+        structuredContent = <LetterContentRenderer data={answerContent.letter_example} />;
+    }
+
+    return (
+        <div className="text-left">
+            {/* Tampilkan Summary Text sebagai teks utama */}
+            <p>{contentText}</p>
+            
+            {/* Tampilkan Konten Terstruktur */}
+            {structuredContent}
+            
+            {/* Tampilkan Sumber */}
+            {answerContent.sources?.length > 0 && (
+                <p className="text-[10px] text-slate-600 dark:text-slate-500 mt-2">
+                    Sumber: {answerContent.sources.join(', ')}
+                </p>
+            )}
+        </div>
+    );
+}
+// -----------------------------------------------------------------
+
+
 function ConversationPage() {
   const navigate = useNavigate()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -10,7 +117,7 @@ function ConversationPage() {
   const [currentId, setCurrentId] = useState(null)
   const [inputValue, setInputValue] = useState('')
   const messagesEndRef = useRef(null)
-  const textareaRef = useRef(null) // Ref untuk mengontrol tinggi textarea
+  const textareaRef = useRef(null) 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [archived, setArchived] = useState([])
@@ -36,11 +143,7 @@ function ConversationPage() {
   const adjustTextareaHeight = () => {
       const textarea = textareaRef.current;
       if (textarea) {
-          // 1. Reset tinggi ke auto (wajib agar scrollHeight dihitung ulang)
           textarea.style.height = 'auto'; 
-          
-          // 2. Terapkan tinggi baru
-          // Textarea diatur dengan max-height: 7rem (kira-kira 3 baris) melalui CSS
           textarea.style.height = textarea.scrollHeight + 'px'; 
       }
   };
@@ -48,13 +151,11 @@ function ConversationPage() {
   // Efek untuk mengurus scroll dan resize saat pesan/input berubah
   useEffect(() => {
     if (messagesEndRef.current) {
-      // Gulir ke paling bawah setelah DOM update
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
     }
   }, [messages])
   
   useEffect(() => {
-      // Panggil fungsi resize setiap kali inputValue berubah
       adjustTextareaHeight();
   }, [inputValue]);
 
@@ -95,21 +196,42 @@ function ConversationPage() {
       (async () => {
           setIsLoadingHistory(true)
           const hist = await api.getHistory(currentId).catch(() => [])
-          setMessages(historyToMessages(hist))
+          setMessages(historyToMessages(hist)) // Panggil fungsi baru
           setIsLoadingHistory(false)
       })()
   }, [currentId])
 
 
+  // --- FUNGSI historyToMessages BARU UNTUK SMART ANSWER ---
   function historyToMessages(history) {
-    return history.map((h) => ({
-      id: h.id,
-      role: h.type === 'prompt' ? 'user' : 'bot',
-      content: h.text,
-      // Asumsi timestamp dari Firestore adalah { _seconds: NNN, _nanoseconds: NNN }
-      time: h.timestamp ? new Date(h.timestamp._seconds * 1000) : new Date(), 
-    }))
+    return history.map((h) => {
+      // Data Prompt (User)
+      if (h.type === 'prompt') {
+        return {
+          id: h.id,
+          role: 'user',
+          content: h.text, // Teks input pengguna
+          time: h.timestamp ? new Date(h.timestamp._seconds * 1000) : new Date(), 
+        }
+      }
+      
+      // Data Answer (Bot)
+      // h.content berisi seluruh objek SmartAnswer yang tersimpan
+      const answerContent = h.content; 
+      
+      // Hapus ID unik answer dari konten untuk menghindari kebingungan dengan ID lainnya
+      delete answerContent.answer_id;
+
+      return {
+        id: h.id,
+        role: 'bot',
+        content: answerContent?.summary_text || h.text, // Teks utama/ringkasan
+        answerContent: answerContent, // SIMPAN OBJEK SMART ANSWER LENGKAP
+        time: h.timestamp ? new Date(h.timestamp._seconds * 1000) : new Date(), 
+      }
+    })
   }
+  // -----------------------------------------------------------
 
   async function addConversation(initialTitle = 'Percakapan Baru') {
     const user = auth.currentUser
@@ -136,9 +258,9 @@ function ConversationPage() {
   // --- LOGIC ARSIP (Tidak diubah) ---
   function archiveCurrent() {
       if (!current) return
-      setArchived((prev) => [{ ...current, messages }, ...prev]) // Simpan pesan saat diarsip
+      setArchived((prev) => [{ ...current, messages }, ...prev]) 
       setConversations((prev) => prev.filter((c) => c.conversation_id !== current.conversation_id))
-      setCurrentId(null) // Pindah ke layar kosong/welcome
+      setCurrentId(null) 
   }
 
   function restoreConversation(id) {
@@ -179,14 +301,18 @@ function ConversationPage() {
     const isNewConversation = !targetId;
 
     if (isNewConversation) {
-        // Buat conversation baru jika tidak ada yang aktif
         const newConv = await addConversation(trimmed.substring(0, 30) + (trimmed.length > 30 ? '...' : '')) 
         if (!newConv) return
         targetId = newConv.conversation_id
     }
 
     // 1. Optimistic append & Clear input
-    setMessages((prev) => [...prev, { id: crypto.randomUUID(), role: 'user', content: trimmed, time: new Date() }])
+    // Catatan: answerContent: {} ditambahkan sebagai placeholder untuk pesan Bot di history
+    setMessages((prev) => [
+        ...prev, 
+        { id: crypto.randomUUID(), role: 'user', content: trimmed, time: new Date() },
+        { id: crypto.randomUUID(), role: 'bot', content: '...', time: new Date(), answerContent: {} } // Dummy loading bot
+    ])
     setInputValue('')
     
     // 2. Update judul jika judul default
@@ -203,15 +329,15 @@ function ConversationPage() {
       setMessages(historyToMessages(hist))
     } catch (err) {
       console.error("Gagal mengirim prompt atau mengambil history:", err)
-      // Rollback optimistic append jika gagal? (Opsional, tapi praktik bagus)
       alert("Gagal mengirim. Silakan coba lagi.")
+      // Rollback: Hapus pesan bot loading (sederhana)
+      setMessages(prev => prev.filter(m => m.role !== 'bot' || m.content !== '...')) 
     }
   }
 
   const displayUserName = userProfile?.username || currentUser?.email || 'User'
   const displayInitial = (userProfile?.username || currentUser?.email || 'U').substring(0,1).toUpperCase()
   
-  // Logika untuk menampilkan input di tengah
   const isInputCentered = messages.length === 0 && !isLoadingHistory && !currentId; 
 
   const HEADER_HEIGHT_CLASS = 'h-14'; 
@@ -323,7 +449,13 @@ function ConversationPage() {
                         <div className={`max-w-[85%] ${m.role === 'user' ? 'text-right' : 'text-left'}`}>
                           {/* Bubble Text: Tambahkan whitespace-pre-wrap dan break-words agar meninggi sesuai konten */}
                           <div className={`${m.role === 'user' ? 'bg-linear-to-br from-emerald-600 to-teal-600 text-white' : 'bg-white/80 dark:bg-slate-900/70 backdrop-blur ring-1 ring-black/5 dark:ring-slate-700/60 text-slate-900 dark:text-slate-100'} rounded-3xl px-5 py-3 shadow-lg whitespace-pre-wrap break-words`}>
-                            {m.content}
+                            {/* PENGGUNAAN KOMPONEN SMART ANSWER RENDERER UNTUK PESAN BOT */}
+                            {m.role === 'bot' ? (
+                                <SmartAnswerRenderer message={m} />
+                            ) : (
+                                m.content
+                            )}
+                            {/* AKHIR PENGGUNAAN KOMPONEN BARU */}
                           </div>
                           <div className={`mt-1 text-[11px] ${m.role === 'user' ? 'text-emerald-700/80' : 'text-slate-500 dark:text-slate-400'}`}>
                             {formattedTime(m.time)}
