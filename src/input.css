@@ -23,3 +23,11 @@
   direction: rtl;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+section {
+  scroll-snap-align: start;
+}
+
+
