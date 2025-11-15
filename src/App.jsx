@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { auth, waitForCurrentUser, signOut } from "./lib/firebase";
 import { Book, Brain, MessageCircle } from "lucide-react";
-import ScrollShowcase from "./components/ScrollShowcase";
-import FiturUnggulanSection from "./components/FiturUnggulanSection";
+import ScrollShowcase from "./componentss/ScrollShowcase";
+import FiturUnggulanSection from "./componentss/FiturUnggulanSection";
 import { ArrowRight } from "lucide-react";
 
 
