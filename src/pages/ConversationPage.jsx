@@ -5,16 +5,14 @@ import { api } from '../lib/api'
 
 // --- 1. KOMPONEN RENDERER UNTUK AYAT AL-QUR'AN ---
 
-function QuranicContentRenderer({ data }) {
+function SingleQuranicContent({ data }) {
     if (!data) return null;
     return (
-        // Style untuk konten Qur'an
         <div className="mt-3 p-4 rounded-xl border border-white/50 dark:border-slate-800/60 bg-white/30 dark:bg-slate-800/60 text-left">
             <h4 className="font-semibold text-base mb-2 border-b border-black/10 dark:border-white/10 pb-1 text-emerald-600 dark:text-emerald-400">
                 {data.surah_name} ({data.surah_number}): {data.ayah_number}
             </h4>
             {data.arabic_text && (
-                // Tambahkan font yang mendukung Bahasa Arab (pastikan di-import di project Anda)
                 <p className="text-2xl my-3 font-serif text-right leading-relaxed">
                     {data.arabic_text}
                 </p>
@@ -31,9 +29,23 @@ function QuranicContentRenderer({ data }) {
     );
 }
 
-// --- 2. KOMPONEN RENDERER UNTUK HADITS ---
+// --- 1. KOMPONEN RENDERER UNTUK AYAT AL-QUR'AN (WRAPPER) ---
+// Ubah nama `QuranicContentRenderer` menjadi `QuranicContentListRenderer`
+function QuranicContentListRenderer({ dataList }) {
+    if (!dataList || dataList.length === 0) return null;
+    return (
+        <div className="space-y-3">
+            <h5 className="font-bold text-sm mt-4 pt-4 border-t border-black/10 dark:border-white/10">Dalil Al-Qur'an:</h5>
+            {dataList.map((data, index) => (
+                <SingleQuranicContent key={index} data={data} />
+            ))}
+        </div>
+    );
+}
 
-function HadithContentRenderer({ data }) {
+
+// --- 2. KOMPONEN RENDERER UNTUK HADITS (SINGLE) ---
+function SingleHadithContent({ data }) {
     if (!data) return null;
     
     return (
@@ -47,6 +59,20 @@ function HadithContentRenderer({ data }) {
             <p className="text-sm italic my-2">"{data.translation}"</p>
             {data.narrator && <p className="text-xs text-slate-500 dark:text-slate-400">Diriwayatkan oleh: {data.narrator}</p>}
             {data.details && <p className="text-xs mt-2 font-medium">Detail: {data.details}</p>}
+        </div>
+    );
+}
+
+// --- 2. KOMPONEN RENDERER UNTUK HADITS (WRAPPER) ---
+// Ubah nama `HadithContentRenderer` menjadi `HadithContentListRenderer`
+function HadithContentListRenderer({ dataList }) {
+    if (!dataList || dataList.length === 0) return null;
+    return (
+        <div className="space-y-3">
+            <h5 className="font-bold text-sm mt-4 pt-4 border-t border-black/10 dark:border-white/10">Dalil Hadits:</h5>
+            {dataList.map((data, index) => (
+                <SingleHadithContent key={index} data={data} />
+            ))}
         </div>
     );
 }
@@ -80,23 +106,30 @@ function SmartAnswerRenderer({ message }) {
 
     if (!answerContent) return <div className="text-left">{contentText}</div>;
 
+    // Ambil daftar dalil dari answerContent (jika ada)
+    const quranList = answerContent.quran_examples || (answerContent.quran_example ? [answerContent.quran_example] : []);
+    const hadithList = answerContent.hadith_examples || (answerContent.hadith_example ? [answerContent.hadith_example] : []);
+
     // Tentukan render yang sesuai berdasarkan properti yang ada
     let structuredContent = null;
-    if (answerContent.quran_example) {
-        structuredContent = <QuranicContentRenderer data={answerContent.quran_example} />;
-    } else if (answerContent.hadith_example) {
-        structuredContent = <HadithContentRenderer data={answerContent.hadith_example} />;
-    } else if (answerContent.letter_example) {
+    if (answerContent.letter_example) {
+        // Render Surat/Dokumen jika ada
         structuredContent = <LetterContentRenderer data={answerContent.letter_example} />;
     }
 
     return (
         <div className="text-left">
-            {/* Tampilkan Summary Text sebagai teks utama */}
-            <p>{contentText}</p>
+            {/* Tampilkan Summary Text / Teks Utama */}
+            <p className='whitespace-pre-wrap'>{contentText}</p>
             
-            {/* Tampilkan Konten Terstruktur */}
+            {/* Tampilkan Konten Terstruktur (Surat/Dokumen) */}
             {structuredContent}
+
+            {/* Tampilkan Daftar Dalil Quran */}
+            <QuranicContentListRenderer dataList={quranList} />
+
+            {/* Tampilkan Daftar Dalil Hadits */}
+            <HadithContentListRenderer dataList={hadithList} />
             
             {/* Tampilkan Sumber */}
             {answerContent.sources?.length > 0 && (
@@ -216,16 +249,21 @@ function ConversationPage() {
       }
       
       // Data Answer (Bot)
-      // h.content berisi seluruh objek SmartAnswer yang tersimpan
-      const answerContent = h.content; 
-      
-      // Hapus ID unik answer dari konten untuk menghindari kebingungan dengan ID lainnya
-      delete answerContent.answer_id;
+      const answerContent = h.content; // Objek SmartAnswer lengkap
+
+      // Tambahkan safety check untuk menghindari TypeError
+      if (answerContent && typeof answerContent === 'object') {
+          // Menghapus metadata relasi sebelum dikirim ke komponen UI
+          // Jika answerContent null/undefined, delete akan gagal dan menyebabkan error Anda.
+          delete answerContent.conversation_id; 
+          delete answerContent.prompt_id;
+      }
 
       return {
         id: h.id,
         role: 'bot',
-        content: answerContent?.summary_text || h.text, // Teks utama/ringkasan
+        // Ambil summary_text dari objek konten, atau gunakan h.text sebagai fallback
+        content: answerContent?.summary_text || h.text || 'Jawaban tidak ditemukan.', 
         answerContent: answerContent, // SIMPAN OBJEK SMART ANSWER LENGKAP
         time: h.timestamp ? new Date(h.timestamp._seconds * 1000) : new Date(), 
       }
