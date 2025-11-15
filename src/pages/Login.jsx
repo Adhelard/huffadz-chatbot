@@ -102,7 +102,7 @@ export default function Login() {
         <p className="mt-5 text-sm text-center text-[#C9C9B8]">
           Belum punya akun?{' '}
           <Link to="/register" className="text-[#B8860B] hover:underline">
-            Daftar Sekarang
+            Buat sekarang!
           </Link>
         </p>
       </div>
