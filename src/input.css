@@ -13,6 +13,17 @@
   
   --font-arabic:"Amiri", serif;
 
+  
+  --bg-main: #1a1a1a;
+  --card-main: #1A2327;
+  --card-sidebar: #1b1b1b;
+  --text-main: #E0E0D6;
+  --text-subtle: #C9C9B8;
+  --primary: #B8860B;
+  --primary-accent: #FFD700;
+  --border-main: rgba(184, 134, 11, 0.3);
+  --border-sidebar: rgba(184, 134, 11, 0.5);
+  
 }
 
 

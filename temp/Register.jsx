@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { auth, createUserWithEmailAndPassword, updateProfile, signInWithGoogle } from '../lib/firebase'
-import { api } from '../lib/api'
+import { auth, createUserWithEmailAndPassword, updateProfile, signInWithGoogle } from '../src/lib/firebase'
+import { api } from '../src/lib/api'
 import { FcGoogle } from 'react-icons/fc'
 
 export default function Register() {
