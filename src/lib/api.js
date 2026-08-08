@@ -8,9 +8,9 @@ async function authFetch(path, options = {}) {
   const token = await getIdToken()
   
   if (!token) {
-     console.error("DEBUG API: Token tidak ditemukan!");
+     console.error("DEBUG API: Token not found!");
   } else {
-     console.log("DEBUG API: Token berhasil diambil (panjang:", token.length, ")");
+     console.log("DEBUG API: Token successfully retrieved (length:", token.length, ")");
   }
   
   if (!token) throw new Error('Not authenticated')
@@ -31,7 +31,7 @@ async function authFetch(path, options = {}) {
     const contentType = res.headers.get('content-type') || ''
     return contentType.includes('application/json') ? res.json() : res.text()
   } catch (e) {
-    throw new Error(`Gagal fetch ke API: ${e.message}`)
+    throw new Error(`Failed to fetch from API: ${e.message}`)
   }
 }
 
@@ -49,7 +49,7 @@ async function guestFetch(path, options = {}) {
     const contentType = res.headers.get('content-type') || ''
     return contentType.includes('application/json') ? res.json() : res.text()
   } catch (e) {
-    throw new Error(`Gagal fetch ke API: ${e.message}`)
+    throw new Error(`Failed to fetch from API: ${e.message}`)
   }
 }
 

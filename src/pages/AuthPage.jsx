@@ -56,13 +56,13 @@ const AUTH_MODES = {
 
 function getFirebaseAuthErrorMessage(error) {
   switch (error.code) {
-    case 'auth/user-not-found': return 'Email tidak ditemukan.';
-    case 'auth/wrong-password': return 'Kata sandi salah.';
-    case 'auth/invalid-email': return 'Format email tidak valid.';
-    case 'auth/email-already-in-use': return 'Email sudah terdaftar.';
-    case 'auth/weak-password': return 'Kata sandi minimal 6 karakter.';
-    case 'auth/too-many-requests': return 'Terlalu banyak percobaan. Coba lagi nanti.';
-    default: return error.message || 'Terjadi kesalahan.';
+    case 'auth/user-not-found': return 'Email not found.';
+    case 'auth/wrong-password': return 'Wrong password.';
+    case 'auth/invalid-email': return 'Invalid email format.';
+    case 'auth/email-already-in-use': return 'Email already registered.';
+    case 'auth/weak-password': return 'Password must be at least 6 characters.';
+    case 'auth/too-many-requests': return 'Too many attempts. Please try again later.';
+    default: return error.message || 'An error occurred.';
   }
 }
 
@@ -127,7 +127,7 @@ function GoogleSignInButton({ setIsLoading, navigate, setError }) {
       className="w-full py-3.5 rounded-xl border border-white/10 bg-white/5 text-[#E0E0D6] flex items-center justify-center gap-3 hover:bg-white/10 hover:border-[#B8860B]/30 transition-all duration-300 group"
     >
       <FcGoogle className="w-5 h-5 group-hover:scale-110 transition-transform" />
-      <span className="font-medium text-sm">Lanjutkan dengan Google</span>
+      <span className="font-medium text-sm">Continue with Google</span>
     </button>
   );
 }
@@ -162,8 +162,8 @@ function LoginComponent({ toggleMode, setIsLoading, isLoading, navigate }) {
         <div className="w-16 h-16 mx-auto bg-gradient-to-br from-[#B8860B] to-[#FFD700] rounded-2xl flex items-center justify-center shadow-lg shadow-[#B8860B]/20 mb-4 rotate-3 hover:rotate-6 transition-transform duration-500">
              <LogIn className="w-8 h-8 text-[#1A2327]" />
         </div>
-        <h2 className="text-2xl font-bold text-white mb-1">Selamat Datang Kembali</h2>
-        <p className="text-sm text-white/50">Masuk untuk melanjutkan tadabbur Anda.</p>
+        <h2 className="text-2xl font-bold text-white mb-1">Welcome Back</h2>
+        <p className="text-sm text-white/50">Log in to continue your study.</p>
       </div>
 
       <div className="space-y-4">
@@ -176,7 +176,7 @@ function LoginComponent({ toggleMode, setIsLoading, isLoading, navigate }) {
             placeholder="nama@email.com" 
         />
         <InputField 
-            label="Kata Sandi" 
+            label="Password" 
             icon={Lock} 
             isPassword={true} 
             value={password} 
@@ -204,20 +204,20 @@ function LoginComponent({ toggleMode, setIsLoading, isLoading, navigate }) {
         disabled={isLoading}
         className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#B8860B] to-[#FFD700] text-[#1A2327] font-bold text-sm shadow-[0_0_20px_rgba(184,134,11,0.3)] hover:shadow-[0_0_30px_rgba(184,134,11,0.5)] hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
-        {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Masuk Sekarang <ArrowRight className="w-4 h-4" /></>}
+        {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Log In Now <ArrowRight className="w-4 h-4" /></>}
       </button>
 
       <div className="relative py-2">
         <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/10"></span></div>
-        <div className="relative flex justify-center text-xs uppercase"><span className="bg-[#0F0F0F] px-2 text-white/30">Atau</span></div>
+        <div className="relative flex justify-center text-xs uppercase"><span className="bg-[#0F0F0F] px-2 text-white/30">Or</span></div>
       </div>
 
       <GoogleSignInButton setIsLoading={setIsLoading} navigate={navigate} setError={setError} />
 
       <p className="text-center text-sm text-white/40">
-        Belum punya akun?{' '}
+        Don't have an account?{' '}
         <button type="button" onClick={() => toggleMode(AUTH_MODES.REGISTER)} className="text-[#FFD700] hover:text-[#fff] font-medium transition-colors">
-          Daftar Gratis
+          Register for Free
         </button>
       </p>
     </form>
@@ -236,7 +236,7 @@ function RegisterComponent({ toggleMode, setIsLoading, isLoading, navigate }) {
 
   async function handleSubmit(e) {
     e.preventDefault(); setError(null);
-    if (password !== confirmPassword) { setError('Kata sandi tidak cocok.'); return; }
+    if (password !== confirmPassword) { setError('Passwords do not match.'); return; }
     setIsLoading(true);
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
@@ -253,18 +253,18 @@ function RegisterComponent({ toggleMode, setIsLoading, isLoading, navigate }) {
         <div className="w-16 h-16 mx-auto bg-[#1A1A1A] border border-[#B8860B]/30 rounded-2xl flex items-center justify-center shadow-lg mb-4 group">
              <UserPlus className="w-8 h-8 text-[#FFD700] group-hover:scale-110 transition-transform" />
         </div>
-        <h2 className="text-2xl font-bold text-white mb-1">Buat Akun Baru</h2>
-        <p className="text-sm text-white/50">Mulai perjalanan spiritual digital Anda.</p>
+        <h2 className="text-2xl font-bold text-white mb-1">Create New Account</h2>
+        <p className="text-sm text-white/50">Start your digital spiritual journey.</p>
       </div>
       
       <div className="space-y-4">
         <InputField 
-            label="Nama (Opsional)" 
+            label="Name (Optional)" 
             icon={User} 
             type="text" 
             value={name} 
             onChange={(e) => setName(e.target.value)} 
-            placeholder="Nama Panggilan" 
+            placeholder="Nickname" 
         />
         <InputField 
             label="Email" 
@@ -276,22 +276,22 @@ function RegisterComponent({ toggleMode, setIsLoading, isLoading, navigate }) {
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InputField 
-                label="Kata Sandi" 
+                label="Password" 
                 icon={Lock} 
                 isPassword={true} 
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)} 
-                placeholder="Min. 6 Karakter" 
+                placeholder="Min. 6 Characters" 
                 showPassword={showPassword}
                 togglePassword={() => setShowPassword(!showPassword)}
             />
             <InputField 
-                label="Konfirmasi" 
+                label="Confirm" 
                 icon={Check} 
                 isPassword={true} 
                 value={confirmPassword} 
                 onChange={(e) => setConfirmPassword(e.target.value)} 
-                placeholder="Ulangi Sandi" 
+                placeholder="Repeat Password" 
                 showPassword={showConfirmPassword}
                 togglePassword={() => setShowConfirmPassword(!showConfirmPassword)}
             />
@@ -315,20 +315,20 @@ function RegisterComponent({ toggleMode, setIsLoading, isLoading, navigate }) {
         disabled={isLoading}
         className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#B8860B] to-[#FFD700] text-[#1A2327] font-bold text-sm shadow-[0_0_20px_rgba(184,134,11,0.3)] hover:shadow-[0_0_30px_rgba(184,134,11,0.5)] hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isLoading ? 'Mendaftarkan...' : 'Daftar Sekarang'}
+        {isLoading ? 'Registering...' : 'Register Now'}
       </button>
 
       <div className="relative py-1">
         <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/10"></span></div>
-        <div className="relative flex justify-center text-xs uppercase"><span className="bg-[#0F0F0F] px-2 text-white/30">Atau</span></div>
+        <div className="relative flex justify-center text-xs uppercase"><span className="bg-[#0F0F0F] px-2 text-white/30">Or</span></div>
       </div>
 
       <GoogleSignInButton setIsLoading={setIsLoading} navigate={navigate} setError={setError} />
 
       <p className="text-center text-sm text-white/40">
-        Sudah punya akun?{' '}
+        Already have an account?{' '}
         <button type="button" onClick={() => toggleMode(AUTH_MODES.LOGIN)} className="text-[#FFD700] hover:text-[#fff] font-medium transition-colors">
-          Masuk
+          Log In
         </button>
       </p>
     </form>
@@ -353,14 +353,14 @@ function VisualPanel({ isRegister }) {
     ? {
         key: 'register',
         imageSrc: '/daftar.png',
-        title: "Buka Akses Penuh Ilmu Syar'i",
-        desc: "Daftar sekarang untuk fitur Multi-Dalil, Murajaah, dan Asisten Fiqih Pribadi."
+        title: "Unlock Full Access to Islamic Knowledge",
+        desc: "Register now for Multi-Dalil, Murajaah, and Personal Fiqh Assistant features."
       }
     : {
         key: 'login',
         imageSrc: '/login.png',
-        title: "Kembali ke Kajian Anda",
-        desc: "Lanjutkan diskusi Tafsir, Hadits, atau masalah Fiqih Anda yang terakhir."
+        title: "Back to Your Study",
+        desc: "Continue your last Tafsir, Hadith, or Fiqh discussion."
       };
   
   return (
@@ -427,7 +427,7 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-[#0a0a0a] text-[#E0E0D6] overflow-hidden relative font-sans">
       <Helmet>
-        <title>Masuk / Daftar | AI Islami</title>
+        <title>Log In / Register | Islamic AI</title>
       </Helmet>
       
       {/* Background Ambience */}

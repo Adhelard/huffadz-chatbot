@@ -99,22 +99,22 @@ const animationStyles = `
 
 // ... (Konstanta Data Prompt) ...
 const SUGGESTED_PROMPTS = [
-    "Jelaskan hukum talak tiga sekaligus dalam Mazhab Syafi'i, sertakan dalil dari Hadits.",
-    "Apa perbedaan pandangan ulama mengenai kadar minimal mahar pernikahan?",
-    "Bagaimana tata cara shalat sunnah gerhana (Khusuf) yang benar berdasarkan Hadits Nabi?",
-    "Apa saja rukun dan syarat sah jual beli (muamalah) dalam Islam?",
-    "Tolong carikan doa iftitah yang paling shahih dan sebutkan sanadnya.",
-    "Jelaskan tafsir Surah Al-Kahfi ayat 60-82 (Kisah Nabi Musa dan Khidir).",
-    "Apa pelajaran dan hikmah utama dari Surah Yusuf secara keseluruhan?",
-    "Sebutkan Asbabun Nuzul (sebab turunnya) Surah Al-Baqarah ayat 255 (Ayat Kursi).",
-    "Buatkan draf taushiyah (nasihat) singkat tentang pentingnya menjaga lisan dari ghibah.",
-    "Carikan hadits yang menjelaskan keutamaan membaca Surah Al-Mulk sebelum tidur.",
-    "Rencanakan jadwal mingguan yang realistis untuk Murajaah (mengulang) 5 juz Al-Qur'an.",
-    "Berikan tips praktis untuk menjaga niat dan konsistensi dalam menghafal Al-Qur'an.",
-    "Sebutkan 3 perbedaan mendasar antara shalat sunnah rawatib dan shalat dhuha.",
-    "Rekomendasikan kitab-kitab Fiqih yang wajib dipelajari oleh pemula.",
-    "Bagaimana pandangan Islam tentang riba dalam transaksi online?",
-    "Carikan dalil yang menjelaskan adanya hukum Qisas."
+    "Explain the ruling on triple talaq at once in the Shafi'i Madhhab, including evidence from Hadith.",
+    "What are the differences in scholars' views regarding the minimum amount of marriage dowry?",
+    "What are the correct procedures for the lunar eclipse prayer (Khusuf) based on the Prophet's Hadith?",
+    "What are the pillars and conditions for valid buying and selling (muamalah) in Islam?",
+    "Please find the most authentic iftitah prayer and mention its sanad.",
+    "Explain the tafsir of Surah Al-Kahfi verses 60-82 (The story of Prophet Musa and Khidr).",
+    "What are the main lessons and wisdom from Surah Yusuf as a whole?",
+    "Mention the Asbabun Nuzul (reason for revelation) of Surah Al-Baqarah verse 255 (Ayat Kursi).",
+    "Draft a brief taushiyah (advice) about the importance of guarding the tongue from ghibah.",
+    "Find hadiths explaining the virtues of reading Surah Al-Mulk before sleeping.",
+    "Plan a realistic weekly schedule for Murajaah (reviewing) 5 juz of the Qur'an.",
+    "Provide practical tips for maintaining intention and consistency in memorizing the Qur'an.",
+    "Mention 3 fundamental differences between rawatib sunnah prayers and dhuha prayer.",
+    "Recommend Fiqh books that are mandatory for beginners to study.",
+    "What is the Islamic view on usury (riba) in online transactions?",
+    "Find evidence (dalil) that explains the law of Qisas."
 ];
 
 const DEFAULT_SIDEBAR_WIDTH = 280;
@@ -152,7 +152,7 @@ function SingleQuranicContent({ data }) {
                     <button 
                         onClick={handleCopyVerse}
                         className="absolute top-2 left-2 text-white/30 hover:text-[#FFD700] transition p-2 rounded-lg hover:bg-white/5"
-                        title="Salin Ayat"
+                        title="Copy Verse"
                     >
                         {isVerseCopied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                     </button>
@@ -162,7 +162,7 @@ function SingleQuranicContent({ data }) {
                     </p>
                 </div>
             ) : (
-                 <p className="text-sm italic text-center text-white/30 my-2">[Teks Arab tidak tersedia]</p>
+                 <p className="text-sm italic text-center text-white/30 my-2">[Arabic text not available]</p>
             )}
 
             {/* Translation */}
@@ -175,7 +175,7 @@ function SingleQuranicContent({ data }) {
             {/* Tafsir */}
             {data.tafsir_summary && (
                 <div className="mt-4 p-3 bg-[#B8860B]/10 rounded-lg border border-[#B8860B]/20">
-                    <p className="text-xs text-[#FFD700] font-bold mb-1">Tafsir Singkat</p>
+                    <p className="text-xs text-[#FFD700] font-bold mb-1">Brief Tafsir</p>
                     <p className="text-xs text-white/70 leading-relaxed">
                         {data.tafsir_summary}
                     </p>
@@ -192,7 +192,7 @@ function SingleHadithContent({ data }) {
         <div className="relative my-2">
              <div className="flex flex-wrap items-center justify-between mb-3 pb-2 border-b border-white/10 gap-2">
                 <h4 className="font-bold text-sm text-[#E0E0D6] flex items-center gap-2">
-                    <span className="bg-white/10 px-2 py-0.5 rounded text-xs text-[#B8860B]">HADITS</span>
+                    <span className="bg-white/10 px-2 py-0.5 rounded text-xs text-[#B8860B]">HADITH</span>
                     {data.book}
                 </h4>
                 <div className="text-xs text-white/40 font-mono">No. {data.number}</div>
@@ -207,7 +207,7 @@ function SingleHadithContent({ data }) {
             <p className="text-sm italic text-white/80 mb-2 leading-relaxed">"{data.translation}"</p>
             
             <div className="flex flex-wrap gap-2 mt-3 text-xs text-white/50">
-                {data.narrator && <span className="bg-white/5 px-2 py-1 rounded border border-white/5">Riwayat: {data.narrator}</span>}
+                {data.narrator && <span className="bg-white/5 px-2 py-1 rounded border border-white/5">Narrated by: {data.narrator}</span>}
                 {data.details && <span className="bg-white/5 px-2 py-1 rounded border border-white/5">{data.details}</span>}
             </div>
         </div>
@@ -226,8 +226,8 @@ function LetterContentRenderer({ data }) {
             </div>
 
             <div className="space-y-1 text-sm text-white/70 mb-6">
-                <p>Kepada Yth. <span className="text-[#E0E0D6] font-medium">{data.recipient}</span></p>
-                <p>Dari: <span className="text-[#E0E0D6] font-medium">{data.sender}</span></p>
+                <p>To: <span className="text-[#E0E0D6] font-medium">{data.recipient}</span></p>
+                <p>From: <span className="text-[#E0E0D6] font-medium">{data.sender}</span></p>
             </div>
 
             <div className="prose prose-invert prose-sm max-w-none text-white/90 leading-relaxed">
@@ -299,7 +299,7 @@ function DalilContainerRenderer({ quranList, hadithList }) {
                         className={`flex-1 px-4 py-3 text-sm font-medium transition-all duration-200 relative
                             ${activeTab === 'hadith' ? 'text-[#FFD700]' : 'text-white/40 hover:text-white/70 hover:bg-white/5'}`}
                     >
-                        Hadits <span className="ml-1 text-xs opacity-60">({hadithList.length})</span>
+                        Hadith <span className="ml-1 text-xs opacity-60">({hadithList.length})</span>
                         {activeTab === 'hadith' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#FFD700] shadow-[0_-2px_6px_rgba(255,215,0,0.5)]" />}
                     </button>
                 )}
@@ -318,7 +318,7 @@ function DalilContainerRenderer({ quranList, hadithList }) {
                         {activeData ? (
                             <IndividualRenderer data={activeData} />
                         ) : (
-                            <p className="text-white/30 italic text-center py-4">Data tidak tersedia.</p>
+                             <p className="text-white/30 italic text-center py-4">Data not available.</p>
                         )}
                     </motion.div>
                 </AnimatePresence>
@@ -352,16 +352,14 @@ function DalilContainerRenderer({ quranList, hadithList }) {
 
 function SmartAnswerRenderer({ message }) {
     const [isMainCopied, setIsMainCopied] = useState(false);
-    const [loadingStatus, setLoadingStatus] = useState("Menghubungi Huffadz..."); 
+    const [loadingStatus, setLoadingStatus] = useState("Contacting Huffadz..."); 
     const answerContent = message.answerContent;
 
     useEffect(() => {
         if (message.isLoading) {
             const statuses = [
-                "Menganalisis pertanyaan...",
-                "Mencari dalil shahih...",
-                "Menyusun jawaban...",
-                "Merapikan referensi...",
+                "Generating..."
+                
             ];
             let index = 0;
             const interval = setInterval(() => {
@@ -433,7 +431,7 @@ function SmartAnswerRenderer({ message }) {
                         className="flex items-center gap-1.5 text-xs text-white/40 hover:text-[#FFD700] transition py-1 px-2 rounded hover:bg-white/5"
                     >
                         {isMainCopied ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
-                        {isMainCopied ? 'Tersalin' : 'Salin'}
+                        {isMainCopied ? 'Copied' : 'Copy'}
                     </button>
                  </div>
             )}
@@ -444,7 +442,7 @@ function SmartAnswerRenderer({ message }) {
                 <div className="mt-6 pt-3 border-t border-white/10 flex items-start gap-2">
                     <div className="mt-0.5"><BookOpen className="w-3 h-3 text-white/30" /></div>
                     <p className="text-[11px] text-white/40 leading-tight">
-                        <span className="font-semibold text-white/50">Referensi:</span> {sources.join(', ')}
+                        <span className="font-semibold text-white/50">References:</span> {sources.join(', ')}
                     </p>
                 </div>
             )}
@@ -468,7 +466,7 @@ function Sidebar({
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     
-    const displayUserName = userProfile?.username || currentUser?.email?.split('@')[0] || 'Tamu';
+    const displayUserName = userProfile?.username || currentUser?.email?.split('@')[0] || 'Guest';
     const displayInitial = displayUserName.substring(0,1).toUpperCase();
 
     const handleSignOut = async () => {
@@ -497,7 +495,7 @@ function Sidebar({
                 >
                     <div className="flex-1 flex items-center justify-center gap-2 bg-[#121212] hover:bg-[#1a1a1a] rounded-[10px] py-2.5 transition-colors h-full w-full">
                         <Plus className="w-4 h-4 text-[#FFD700]" />
-                        <span className="font-medium text-sm text-[#E0E0D6] group-hover:text-white">Percakapan Baru</span>
+                        <span className="font-medium text-sm text-[#E0E0D6] group-hover:text-white">New Conversation</span>
                     </div>
                 </button>
             </div>
@@ -505,7 +503,7 @@ function Sidebar({
             {/* List Percakapan */}
             <div className="relative flex-1 overflow-y-auto px-3 py-2 custom-scrollbar">
                 <div className="space-y-1">
-                    <p className="px-3 text-xs font-semibold text-white/20 uppercase tracking-wider mb-2 mt-2">Riwayat</p>
+                    <p className="px-3 text-xs font-semibold text-white/20 uppercase tracking-wider mb-2 mt-2">History</p>
                     
                     {currentUser && conversations.map((c) => (
                         <div key={c.conversation_id} className="relative group">
@@ -527,7 +525,7 @@ function Sidebar({
                                     onDeleteConversation(c.conversation_id);
                                 }}
                                 className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-white/20 hover:text-rose-400 hover:bg-rose-500/10 rounded-md opacity-0 group-hover:opacity-100 transition-all"
-                                title="Hapus"
+                                title="Delete"
                             >
                                 <Trash2 className="w-4 h-4" />
                             </button>
@@ -539,8 +537,8 @@ function Sidebar({
                             <div className="w-12 h-12 rounded-full bg-[#B8860B]/20 flex items-center justify-center mx-auto mb-3 text-[#FFD700]">
                                 <LogIn className="w-6 h-6" />
                             </div>
-                            <h5 className="font-medium text-white mb-1">Masuk Akun</h5>
-                            <p className="text-xs text-white/50 mb-4 leading-relaxed">Simpan riwayat percakapan Anda agar tidak hilang.</p>
+                            <h5 className="font-medium text-white mb-1">Sign In</h5>
+                            <p className="text-xs text-white/50 mb-4 leading-relaxed">Save your conversation history so it doesn't get lost.</p>
                             <button 
                                 onClick={() => navigate('/auth')}
                                 className="w-full py-2 rounded-lg bg-[#B8860B] text-[#121212] font-bold text-xs hover:bg-[#d4a017] transition shadow-lg shadow-[#B8860B]/10"
@@ -552,7 +550,7 @@ function Sidebar({
                     
                     {currentUser && conversations.length === 0 && (
                         <div className="text-center py-10 px-4">
-                            <p className="text-sm text-white/30 italic">Belum ada riwayat percakapan.</p>
+                            <p className="text-sm text-white/30 italic">No conversation history yet.</p>
                         </div>
                     )}
                 </div>
@@ -570,11 +568,11 @@ function Sidebar({
                             className="absolute left-3 right-3 bottom-[70px] rounded-xl bg-[#1E1E1E] border border-white/10 shadow-2xl overflow-hidden z-20"
                         >
                             <div className="p-3 border-b border-white/5">
-                                <p className="text-xs font-medium text-white/40 uppercase tracking-wider">Akun</p>
+                                <p className="text-xs font-medium text-white/40 uppercase tracking-wider">Account</p>
                                 <p className="text-sm text-white truncate">{currentUser.email}</p>
                             </div>
                             <button onClick={handleSignOut} className="w-full text-left px-4 py-3 text-sm text-rose-400 hover:bg-white/5 flex items-center gap-2 transition-colors">
-                                <LogOut className="w-4 h-4" /> Keluar
+                                <LogOut className="w-4 h-4" /> Sign Out
                             </button>
                         </motion.div>
                     )}
@@ -614,7 +612,7 @@ const welcomeItemVariants = {
 };
 
 function WelcomeScreen({ onSendSuggestion, currentUser, userProfile }) { 
-    const displayUserName = userProfile?.username || (currentUser ? "Sahabat" : "Tamu");
+    const displayUserName = userProfile?.username || (currentUser ? "Friend" : "Guest");
     const activePrompts = useRef([...SUGGESTED_PROMPTS].sort(() => 0.5 - Math.random()).slice(0, 4)).current;
 
      return (
@@ -635,7 +633,7 @@ function WelcomeScreen({ onSendSuggestion, currentUser, userProfile }) {
                         Assalamu'alaikum, {displayUserName}.
                     </h2>
                     <p className="text-[#C9C9B8] text-base sm:text-lg font-light">
-                        Apa yang ingin Anda pelajari atau diskusikan hari ini?
+                        What would you like to learn or discuss today?
                     </p>
                 </motion.div>
             </div>
@@ -706,7 +704,7 @@ function ChatArea({
     
     const formattedTime = (d) => {
         try {
-            return new Intl.DateTimeFormat('id-ID', { hour: '2-digit', minute: '2-digit' }).format(d);
+            return new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' }).format(d);
         } catch { return ''; }
     };
 
@@ -722,7 +720,7 @@ function ChatArea({
                         <Menu className="w-6 h-6" />
                     </button>
                     <div className="font-semibold text-[#E0E0D6] truncate text-sm sm:text-base">
-                        {currentId ? (conversations.find(c => c.conversation_id === currentId)?.title || 'Percakapan') : 'AI Islami'}
+                        {currentId ? (conversations.find(c => c.conversation_id === currentId)?.title || 'Conversation') : 'Islamic AI'}
                     </div>
                 </div>
                 
@@ -732,7 +730,7 @@ function ChatArea({
                         className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#B8860B]/10 border border-[#B8860B]/30 text-[#FFD700] text-xs font-medium hover:bg-[#B8860B]/20 transition"
                     >
                         <Heart className="w-4 h-4 fill-current" />
-                        <span className="hidden sm:inline">Kontribusi</span>
+                        <span className="hidden sm:inline">Contribution</span>
                     </button>
                     <img src="logo.svg" alt="Logo" className='h-8 w-8 opacity-80 hover:opacity-100 transition-opacity'></img>
                 </div>
@@ -748,7 +746,7 @@ function ChatArea({
                         {isLoadingHistory ? (
                              <div className="flex flex-col items-center gap-3">
                                 <Loader2 className="w-8 h-8 animate-spin text-[#B8860B]" />
-                                <span className="text-xs text-white/30 tracking-widest uppercase">Memuat Riwayat...</span>
+                                <span className="text-xs text-white/30 tracking-widest uppercase">Loading History...</span>
                              </div>
                         ) : (
                             <WelcomeScreen 
@@ -772,7 +770,7 @@ function ChatArea({
                                     
                                     {/* Avatar / Icon */}
                                     <div className={`mb-1 flex items-center gap-2 text-xs font-medium text-white/40 ${m.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                                        {m.role === 'user' ? 'Anda' : 'Huffadz AI'}
+                                        {m.role === 'user' ? 'You' : 'Huffadz AI'}
                                         <span className="text-[10px] opacity-50">{formattedTime(m.time)}</span>
                                     </div>
 
@@ -821,7 +819,7 @@ function ChatArea({
                                     }
                                 }}
                                 onChange={(e) => setInputValue(e.target.value)}
-                                placeholder="Tanyakan sesuatu..."
+                                placeholder="Ask something..."
                                 rows={1}
                                 // ANTI ZOOM ON MOBILE: text-[16px] prevents iOS zoom
                                 className="flex-1 max-h-[160px] min-h-[44px] bg-transparent border-0 outline-none focus:outline-none focus:ring-0 text-[#E0E0D6] placeholder:text-white/20 py-3 px-3 sm:px-4 resize-none leading-relaxed custom-scrollbar text-[16px] sm:text-[15px]" 
@@ -849,7 +847,7 @@ function ChatArea({
                     {/* Disclaimer Footer */}
                     <div className="text-center mt-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-500 delay-150">
                         <p className="text-[10px] text-white/30 tracking-wide font-light">
-                            AI dapat membuat kesalahan. Selalu rujuk kembali kepada Ulama & Kitab terpercaya.
+                            AI can make mistakes. Always refer back to trusted Scholars & Books.
                         </p>
                     </div>
                 </div>
@@ -890,9 +888,9 @@ function DeleteConfirmationModal({ isOpen, onCancel, onConfirm, isDeleting }) {
                         <Trash2 className="w-6 h-6 text-rose-500" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-bold text-[#E0E0D6]">Hapus Percakapan?</h3>
+                        <h3 className="text-lg font-bold text-[#E0E0D6]">Delete Conversation?</h3>
                         <p className="mt-2 text-xs text-white/50 leading-relaxed">
-                            Tindakan ini tidak dapat dibatalkan. Riwayat chat ini akan hilang selamanya.
+                            This action cannot be undone. This chat history will be lost forever.
                         </p>
                     </div>
                 </div>
@@ -903,14 +901,14 @@ function DeleteConfirmationModal({ isOpen, onCancel, onConfirm, isDeleting }) {
                         disabled={isDeleting}
                         className="px-4 py-2.5 rounded-xl text-sm font-medium text-white/70 bg-white/5 hover:bg-white/10 transition"
                     >
-                        Batal
+                        Cancel
                     </button>
                     <button
                         onClick={onConfirm}
                         disabled={isDeleting}
                         className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 transition shadow-lg shadow-rose-900/20"
                     >
-                        {isDeleting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Ya, Hapus'}
+                        {isDeleting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Yes, Delete'}
                     </button>
                 </div>
             </motion.div>
@@ -942,21 +940,21 @@ function GuestAlert({ isOpen, onClose }) {
                         <User className="w-5 h-5" />
                     </div>
                     <div className="flex-1 pt-1">
-                        <p className="text-sm font-medium text-[#E0E0D6]">Mode Tamu</p>
-                        <p className="text-xs text-white/50 mt-1">Chat Anda tidak akan tersimpan setelah sesi berakhir.</p>
+                        <p className="text-sm font-medium text-[#E0E0D6]">Guest Mode</p>
+                        <p className="text-xs text-white/50 mt-1">Your chat will not be saved after the session ends.</p>
                         
                         <div className="flex gap-3 mt-3">
                             <button
                                 onClick={() => navigate('/auth')}
                                 className="text-xs font-bold text-[#1A1A1A] bg-[#FFD700] px-3 py-1.5 rounded-md hover:bg-[#ffdf40] transition"
                             >
-                                Daftar Sekarang
+                                Register Now
                             </button>
                              <button
                                 onClick={onClose}
                                 className="text-xs font-medium text-white/60 hover:text-white transition"
                             >
-                                Lanjut sebagai Tamu
+                                Continue as Guest
                             </button>
                         </div>
                     </div>
@@ -997,9 +995,9 @@ function WelcomeInfaqAlert({ isOpen, onClose }) {
                                 <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#FFD700] to-[#B8860B] flex items-center justify-center shadow-lg shadow-[#B8860B]/20 mb-4">
                                     <Heart className="w-7 h-7 text-[#121212] fill-current" />
                                 </div>
-                                <h3 className="text-2xl font-bold text-white mb-2">Dukung AI-Islami</h3>
+                                <h3 className="text-2xl font-bold text-white mb-2">Support Islamic-AI</h3>
                                 <p className="text-sm text-white/60 leading-relaxed">
-                                    Bantu kami menjaga server tetap hidup dan data tetap akurat untuk umat.
+                                    Help us keep the server running and data accurate for the Ummah.
                                 </p>
                             </div>
 
@@ -1007,16 +1005,16 @@ function WelcomeInfaqAlert({ isOpen, onClose }) {
                                 <button className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:border-[#B8860B]/50 transition group">
                                     <Database className="w-5 h-5 text-[#B8860B] group-hover:scale-110 transition-transform" />
                                     <div className="text-left">
-                                        <p className="text-sm font-semibold text-white">Kontribusi Data</p>
-                                        <p className="text-[10px] text-white/40">Verifikasi Hadits & Kitab</p>
+                                        <p className="text-sm font-semibold text-white">Data Contribution</p>
+                                        <p className="text-[10px] text-white/40">Hadith & Books Verification</p>
                                     </div>
                                     <ChevronRight className="w-4 h-4 text-white/20 ml-auto" />
                                 </button>
                                 <button className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:border-[#FFD700]/50 transition group">
                                     <Coins className="w-5 h-5 text-[#FFD700] group-hover:scale-110 transition-transform" />
                                     <div className="text-left">
-                                        <p className="text-sm font-semibold text-white">Infaq Server</p>
-                                        <p className="text-[10px] text-white/40">Jariyah untuk operasional</p>
+                                        <p className="text-sm font-semibold text-white">Server Infaq</p>
+                                        <p className="text-[10px] text-white/40">Jariyah for operations</p>
                                     </div>
                                     <ChevronRight className="w-4 h-4 text-white/20 ml-auto" />
                                 </button>
@@ -1026,7 +1024,7 @@ function WelcomeInfaqAlert({ isOpen, onClose }) {
                                 onClick={onClose}
                                 className="w-full py-3 rounded-xl bg-[#E0E0D6] text-[#121212] font-bold text-sm hover:bg-white transition"
                             >
-                                Nanti Saja
+                                Not Now
                             </button>
                         </div>
                     </motion.div>
@@ -1047,8 +1045,8 @@ function ContributionModal({ isOpen, onClose }) {
     const GFORM_URL = "https://forms.gle/mk1jZm3NBYTJzuXdA";
 
     // LINK WHATSAPP OTOMATIS
-    const vectorWaLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Assalamualaikum, saya developer/data scientist. Saya ingin berkontribusi data Vector Database (Embeddings) untuk Project Dalil.")}`;
-    const infaqWaLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Assalamualaikum, saya ingin berinfaq untuk biaya server & operasional Project Dalil.")}`;
+    const vectorWaLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Assalamualaikum, I am a developer/data scientist. I would like to contribute Vector Database (Embeddings) data for Project Dalil.")}`;
+    const infaqWaLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Assalamualaikum, I would like to give infaq for the server & operational costs of Project Dalil.")}`;
 
     return (
         <AnimatePresence>
@@ -1079,9 +1077,9 @@ function ContributionModal({ isOpen, onClose }) {
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#E0E0D6] to-white">
-                                        Gerbang Kontribusi Jariyah
+                                        Jariyah Contribution Gateway
                                     </h2>
-                                    <p className="text-xs text-white/40">Mari bangun ekosistem kecerdasan buatan untuk umat.</p>
+                                    <p className="text-xs text-white/40">Let's build an artificial intelligence ecosystem for the Ummah.</p>
                                 </div>
                             </div>
                             <button 
@@ -1098,8 +1096,8 @@ function ContributionModal({ isOpen, onClose }) {
                             {/* Intro Text */}
                             <div className="mb-10 text-center max-w-2xl mx-auto">
                                 <p className="text-sm sm:text-base text-white/70 leading-relaxed">
-                                    <span className="text-[#FFD700] font-semibold">Project Dalil</span> adalah inisiatif nirlaba. 
-                                    Kami membutuhkan bantuan Anda—baik berupa data ilmu maupun dukungan dana—untuk menjaga server tetap hidup, cepat, dan gratis bagi semua penuntut ilmu.
+                                    <span className="text-[#FFD700] font-semibold">Project Dalil</span> is a non-profit initiative. 
+                                    We need your help—both in terms of knowledge data and financial support—to keep the server running, fast, and free for all seekers of knowledge.
                                 </p>
                             </div>
 
@@ -1109,7 +1107,7 @@ function ContributionModal({ isOpen, onClose }) {
                                 <div className="space-y-6">
                                     <div className="flex items-center gap-3 mb-2">
                                         <Database className="w-5 h-5 text-emerald-400" />
-                                        <h3 className="text-lg font-bold text-[#E0E0D6]">1. Wakaf Data (Ilmu)</h3>
+                                        <h3 className="text-lg font-bold text-[#E0E0D6]">1. Data Endowment (Knowledge)</h3>
                                     </div>
 
                                     {/* Card A: Vector DB (Technical) */}
@@ -1120,14 +1118,14 @@ function ContributionModal({ isOpen, onClose }) {
                                             </div>
                                             <h4 className="font-bold text-emerald-400 mb-2">Vector Database</h4>
                                             <p className="text-xs text-white/60 mb-4 leading-relaxed pr-8">
-                                                <strong className="text-white/80">Khusus Developer/Data Scientist.</strong><br/>
-                                                Kirimkan dataset Hadits/Kitab yang sudah bersih (JSON/CSV) atau sudah di-embedding.
+                                                <strong className="text-white/80">Specifically for Developers/Data Scientists.</strong><br/>
+                                                Send us clean Hadith/Book datasets (JSON/CSV) or already embedded ones.
                                             </p>
                                             <button 
                                                 onClick={() => window.open(vectorWaLink, '_blank')}
                                                 className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-emerald-900/30 text-emerald-400 font-medium text-sm border border-emerald-500/20 hover:bg-emerald-500 hover:text-[#121212] transition-all"
                                             >
-                                                Kontribusi via WhatsApp <ExternalLink className="w-3.5 h-3.5" />
+                                                Contribute via WhatsApp <ExternalLink className="w-3.5 h-3.5" />
                                             </button>
                                         </div>
                                     </div>
@@ -1138,16 +1136,16 @@ function ContributionModal({ isOpen, onClose }) {
                                             <div className="absolute top-4 right-4 text-amber-500/20 group-hover:text-amber-500 transition-colors">
                                                 <FileText className="w-6 h-6" />
                                             </div>
-                                            <h4 className="font-bold text-amber-400 mb-2">Dokumen Mentah</h4>
+                                            <h4 className="font-bold text-amber-400 mb-2">Raw Documents</h4>
                                             <p className="text-xs text-white/60 mb-4 leading-relaxed pr-8">
-                                                <strong className="text-white/80">Untuk Umum.</strong><br/>
-                                                Punya PDF Kitab, Jurnal, atau Makalah terpercaya? Upload file mentahnya di sini. Tim kami akan memprosesnya.
+                                                <strong className="text-white/80">For Public.</strong><br/>
+                                                Do you have reliable PDF Books, Journals, or Papers? Upload the raw files here. Our team will process them.
                                             </p>
                                             <button 
                                                 onClick={() => window.open(GFORM_URL, '_blank')}
                                                 className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-amber-900/30 text-amber-400 font-medium text-sm border border-amber-500/20 hover:bg-amber-500 hover:text-[#121212] transition-all"
                                             >
-                                                Isi Formulir Upload <ExternalLink className="w-3.5 h-3.5" />
+                                                Fill Upload Form <ExternalLink className="w-3.5 h-3.5" />
                                             </button>
                                         </div>
                                     </div>
@@ -1157,7 +1155,7 @@ function ContributionModal({ isOpen, onClose }) {
                                 <div className="space-y-6 flex flex-col">
                                     <div className="flex items-center gap-3 mb-2">
                                         <Heart className="w-5 h-5 text-[#FFD700]" />
-                                        <h3 className="text-lg font-bold text-[#E0E0D6]">2. Infaq Operasional (Harta)</h3>
+                                        <h3 className="text-lg font-bold text-[#E0E0D6]">2. Operational Infaq (Wealth)</h3>
                                     </div>
 
                                     <div className="flex-1 relative p-[1px] rounded-2xl bg-gradient-to-br from-[#B8860B] via-[#FFD700] to-[#B8860B] shadow-[0_0_40px_rgba(184,134,11,0.15)]">
@@ -1167,9 +1165,9 @@ function ContributionModal({ isOpen, onClose }) {
                                             <div className="absolute top-0 right-0 w-64 h-64 bg-[#B8860B]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
 
                                             <div>
-                                                <h4 className="text-2xl font-bold text-white mb-1">Dukung Server AI</h4>
+                                                <h4 className="text-2xl font-bold text-white mb-1">Support AI Server</h4>
                                                 <div className="flex items-center gap-2 mb-6">
-                                                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#FFD700] text-black">BEBAS IKLAN</span>
+                                                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#FFD700] text-black">AD-FREE</span>
                                                     <span className="text-xs text-white/40">100% Non-Profit</span>
                                                 </div>
 
@@ -1179,8 +1177,8 @@ function ContributionModal({ isOpen, onClose }) {
                                                             <Cpu className="w-3 h-3 text-[#FFD700]" />
                                                         </div>
                                                         <div>
-                                                            <p className="text-sm text-white font-medium">Biaya GPU & Cloud</p>
-                                                            <p className="text-xs text-white/50">Menyewa server GPU mahal untuk pemrosesan AI yang cepat.</p>
+                                                            <p className="text-sm text-white font-medium">GPU & Cloud Costs</p>
+                                                            <p className="text-xs text-white/50">Renting expensive GPU servers for fast AI processing.</p>
                                                         </div>
                                                     </div>
                                                     <div className="flex items-start gap-3">
@@ -1188,8 +1186,8 @@ function ContributionModal({ isOpen, onClose }) {
                                                             <Database className="w-3 h-3 text-[#FFD700]" />
                                                         </div>
                                                         <div>
-                                                            <p className="text-sm text-white font-medium">Penyimpanan Vector</p>
-                                                            <p className="text-xs text-white/50">Menyimpan jutaan embeddings ayat dan hadits.</p>
+                                                            <p className="text-sm text-white font-medium">Vector Storage</p>
+                                                            <p className="text-xs text-white/50">Storing millions of verse and hadith embeddings.</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1197,7 +1195,7 @@ function ContributionModal({ isOpen, onClose }) {
 
                                             <div className="mt-auto">
                                                 <div className="p-4 rounded-xl bg-[#1A1A1A] border border-white/5 mb-4 text-center">
-                                                    <p className="text-xs text-white/40 mb-1 uppercase tracking-widest">Salurkan via WhatsApp Admin</p>
+                                                    <p className="text-xs text-white/40 mb-1 uppercase tracking-widest">Contribute via WhatsApp Admin</p>
                                                     <p className="text-lg font-mono text-[#FFD700] font-bold tracking-wide">0857-4347-0005</p>
                                                 </div>
                                                 
@@ -1205,11 +1203,11 @@ function ContributionModal({ isOpen, onClose }) {
                                                     onClick={() => window.open(infaqWaLink, '_blank')}
                                                     className="w-full group py-3 rounded-xl bg-gradient-to-r from-[#B8860B] to-[#FFD700] text-[#121212] font-bold text-sm shadow-lg shadow-[#B8860B]/20 hover:shadow-[#B8860B]/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                                                 >
-                                                    Konfirmasi Infaq Sekarang
+                                                    Confirm Infaq Now
                                                     <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform" />
                                                 </button>
                                                 <p className="text-[10px] text-white/30 text-center mt-3">
-                                                    "Apabila manusia meninggal dunia, terputuslah segala amalnya kecuali tiga: sedekah jariyah, ilmu yang bermanfaat..." (HR. Muslim)
+                                                    "When a human being dies, his deeds come to an end except for three: a continuous charity, knowledge from which benefit is derived..." (HR. Muslim)
                                                 </p>
                                             </div>
                                         </div>
@@ -1368,7 +1366,7 @@ function ConversationPage() {
                 return [];
             });
             setMessages(formattedMessages);
-        } catch (e) { alert("Gagal memuat riwayat."); } 
+        } catch (e) { alert("Failed to load history."); } 
         finally { setIsLoadingHistory(false); }
     };
 
@@ -1444,8 +1442,8 @@ function ConversationPage() {
             const errorAnswer = {
                 id: crypto.randomUUID(),
                 role: 'bot',
-                content: `Maaf, terjadi kesalahan: ${err.message}`,
-                answerContent: { summary_text: `Maaf, terjadi kesalahan: ${err.message}` },
+                content: `Sorry, an error occurred: ${err.message}`,
+                answerContent: { summary_text: `Sorry, an error occurred: ${err.message}` },
                 time: new Date(),
                 isLoading: false,
             };
@@ -1465,7 +1463,7 @@ function ConversationPage() {
             await api.deleteConversation(id);
             setConversations(prev => prev.filter(c => c.conversation_id !== id));
             if (currentId === id) handleNewConversation();
-        } catch (err) { alert(`Gagal menghapus: ${err.message}`); } 
+        } catch (err) { alert(`Failed to delete: ${err.message}`); } 
         finally { setIsDeleting(false); setConversationToDelete(null); }
     };
 
